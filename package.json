@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node .",
-    "dev": "node --watch ."
+    "start": "node  --env-file .env .",
+    "dev": "node --env-file .env.dev --watch .",
+    "seed": ""
   },
   "repository": {
     "type": "git",
