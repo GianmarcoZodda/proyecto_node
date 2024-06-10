@@ -6,4 +6,5 @@ const connectionDb = new Sequelize("test", "root", "", {
     port: 3306
 })
 
+
 export default connectionDb
