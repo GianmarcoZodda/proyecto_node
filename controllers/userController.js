@@ -1,4 +1,5 @@
 import  user from "../models/user.js"; 
+import rol from "../models/rol.js"
 //import bcrypt from 'bcrypt';
 
 
@@ -9,7 +10,7 @@ class userController{
         try {
             //user.findAll es un metodo de sequelize, me trae todos los user en bd. le puedo pasar un objeto con las props qeu quiero que me traiga de la tabla
             const users = await user.findAll({
-              attributes: ["name", "surname", "email", "password", "rolId"],
+              attributes: ["id", "name", "surname", "email", "password", "rolId"],
               include: {
                 //include mete una consulta conjunta entre las tablas (join)
                 model: rol,
@@ -21,6 +22,7 @@ class userController{
               message: users,
             });
           } catch (error) {
+            console.log("fallo algo")
             res.status(400).send({ succces: false, message: error.message });
           }
     }
@@ -38,8 +40,8 @@ class userController{
             name,
             surname,
             email,
+            password, //aca tenemos que poner : hashedpassword
             rolId : 3, //le asigno el rol de lector al crearse
-            password //aca tenemos que poner : hashedpassword
           });
           //201, creado correctamentee
           
@@ -53,7 +55,7 @@ class userController{
           });
         } catch (error) {
             //400, error del cliente
-          res.status(400).send({ succces: false, error: error.message });
+          res.status(400).json({ succces: false, error: error.message });
         }
       }
 
@@ -78,11 +80,13 @@ class userController{
                 message: `Usuario ${selectedUser.name} obtenido con exito`,
               });
             } else {
-              res.status(404).send({ succces: false, error: error.message });
+              res.status(404).json({ succces: false, error: error.message });
+              console.log("no existe con ese id")
             }
 
           } catch (error) {
-            res.status(500).send({ succces: false, error: error.message });
+            res.status(500).json({ succces: false, error: error.message });
+            console.log("error del server")
           }
         }
         
@@ -101,12 +105,12 @@ class userController{
                     surname,
                     password
                 });
-                res.status(200).send({succes: true, message: `El nombre del usuario ${originalUser.name} ahora es: ${updatedUser.name}`})
+                res.status(200).send({succes: true, message: `El nombre del usuario ahora es: ${updatedUser.name}`})
             }else{
                 res.status(404).json({ succes: false, message: "no se encuentra el usuario con id: "+id });
             }
             } catch (error) {
-                res.status(400).send({ succes: false, error: error.message });
+                res.status(400).json({ succes: false, error: error.message });
             }
 
         }
@@ -116,6 +120,7 @@ class userController{
 
             try {
                 const { id } = req.params;
+                console.log("el id es: "+id);
                 const userToDestroy = await user.findByPk(id, {
                   attributes: ["name", "surname", "email", "password", "rolId"],
                   include: {
@@ -123,15 +128,17 @@ class userController{
                     attributes: ["name"],
                   },
                 });
-
+                console.log("erl nombre del user a destruir: "+userToDestroy.name)
                 if(userToDestroy){
-                    await user.destroy();
-                    res.status(204).send({ succes: true, message:  `El usuario: ${userToDestroy.name} ya no existe`});
+                    await user.destroy({where: {id}});
+                    res.status(204).json({ success: true, message:  `El usuario ya no existe`});
+                    console.log("usuario destruido")
                 }else{
-                    res.status(404).send({ succes: false, message: `El usuario: ${userToDestroy.name} no se encuentra`});
+                    res.status(404).json({ success: false, message: `El usuario no se encuentra`});
                 }
             } catch (error) {
-                res.status(500).json({ succes: false, error: error.message });
+              console.log("el error es: "+error.message)
+                res.status(500).json({ success: false, error: error.message });
             }
 
         }

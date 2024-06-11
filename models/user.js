@@ -13,11 +13,11 @@ user.init(
       allowNull: false,
       validate: {
         notNull: {
-        msg: validationMessages.required
+        msg: validationMessages.required("name")
         },
         len: {
             args: [2, 40],
-            msg: validationMessages.length
+            msg: validationMessages.length("name", 2, 40)
         },
       },
     },
@@ -26,11 +26,11 @@ user.init(
         allowNull: false,
         validate: {
             notNull: {
-            msg: validationMessages.required
+            msg: validationMessages.required("surname")
             },
             len: {
                 args: [2, 40],
-                msg: validationMessages.length
+                msg: validationMessages.length("surname", 2, 40)
             },
           },
     },
@@ -40,10 +40,10 @@ user.init(
       unique: true,
       validate: {
         isEmail: {
-          msg: validationMessages.isEmail
+          msg: validationMessages.isEmail("email")
         },
         notNull: {
-          msg: validationMessages.required
+          msg: validationMessages.required("email")
         }
       }
     },
@@ -52,11 +52,11 @@ user.init(
       allowNull: false,
       validate: {
         notNull: {
-        msg: validationMessages.required
+        msg: validationMessages.required("password")
         },
         len: {
             args: [8, 20],
-            msg: validationMessages.length
+            msg: validationMessages.length("password", 8, 20)
         },
       },
     },
