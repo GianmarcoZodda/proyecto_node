@@ -1,4 +1,4 @@
-import { rol } from "../models/models.js";
+import { rol } from "../models/model.js";
 
 const rolSeed = async () => {
   try {

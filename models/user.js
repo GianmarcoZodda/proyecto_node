@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import validationMessages from "./helpers.erros.js"
+import validationMessages from "../helpers/errors.js"
 import connectionDb from "../connection/connectionDb.js";
 
 

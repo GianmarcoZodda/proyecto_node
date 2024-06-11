@@ -1,5 +1,6 @@
 import {Sequelize} from "sequelize"
 import {
+    PORT,
     DB_NAME,
     DB_USER,
     DB_PASSWORD,
@@ -10,9 +11,9 @@ import {
 
 
 const connectionDb = new Sequelize("test", "root", "", {
-    host: "localhost",
-    dialect: "mysql",
-    port: 3306
+    host: DB_HOST,
+    dialect: DB_DIALECT,
+    port: PORT
 })
 
 export default connectionDb

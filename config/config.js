@@ -1,4 +1,4 @@
-const PORT = process.env.PORT || 3200;
+const PORT = process.env.PORT || 3306;
 const DB_NAME = process.env.DB_NAME || "";
 const DB_USER = process.env.DB_USER || "";
 const DB_PASSWORD = process.env.DB_PASSWORD || "";

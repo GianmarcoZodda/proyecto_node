@@ -1,4 +1,4 @@
-//la carpeta helper la cree para guardar archivos que nos "ayuden" en toda la aplicacion"
+//la carpeta helpers la cree para guardar archivos que nos "ayuden" en toda la aplicacion"
 
 //en este en particular, guardo las constantes con los mensajes de error definidos para los atributos de nuestros modelos, (asi como hicimos en pnt1)
 

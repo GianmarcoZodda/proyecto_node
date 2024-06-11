@@ -1,9 +1,12 @@
 import express from "express"
-import url from "url"
-import path from "path"
+//import url from "url"
+//import path from "path"
 import routes from "./routes/routes.js"
-import morgan from "morgan"
+//import morgan from "morgan"
 import connectionDb from "./connection/connectionDb.js"
+import {errorNotFound} from "./middlewares/errorNotFound.js";
+import rolSeed from "./seed/rolSeed.js";
+import {PORT} from "./config/config.js";
 
 
 
@@ -38,10 +41,10 @@ app.use(errorNotFound);
 await connectionDb.sync({ force: true });
 
 //creeamos los roles al iniciar la app
-await roleSeed()
+await rolSeed()
 
 
 //puerto de escucha
 app.listen(PORT, ()=>{
-    console.log("funciona");
+    console.log("funciona en: "+PORT);
 })

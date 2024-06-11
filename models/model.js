@@ -1,5 +1,7 @@
-import user from "./models/lector.js";
-import rol from "./models/rol.js";
+import user from "../models/user.js";
+import rol from "../models/rol.js";
+import libro from "../models/libro.js";
+import prestamo from "../models/prestamo.js";
 
 
 //este archivo lo uso para definir la relacion entre modelos
@@ -17,6 +19,6 @@ user.belongsTo(rol, {
 
 // creo la tabla prestamo, intermediaria entre libro y lector ( relacion de muchos a muchos)
 libro.belongsToMany(user, { through: prestamo, foreignKey: 'libroId' });
-user.belongsToMany(libro, { through: prestamo, foreignKey: 'lectorId' });
+user.belongsToMany(libro, { through: prestamo, foreignKey: 'userId' });
 
 export { user, rol , libro, prestamo};

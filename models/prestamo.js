@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import validationMessages from "./helpers.erros.js"
+import validationMessages from "../helpers/errors.js"
 import connectionDb from "../connection/connectionDb.js";
 
 //esta tabla en realidad se crea automaticamente cuando defino la relacion el la clase "model", pero la creo aca para poder agregarle los atributos
