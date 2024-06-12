@@ -5,6 +5,8 @@ const DB_PASSWORD = process.env.DB_PASSWORD || "";
 const DB_DIALECT = process.env.DB_DIALECT;
 const DB_HOST = process.env.DB_HOST;
 const DB_PORT = process.env.DB_PORT;
+const SECRET = process.env.SECRET;
+
 
 export {
   PORT,
@@ -14,4 +16,5 @@ export {
   DB_DIALECT,
   DB_HOST,
   DB_PORT,
+  SECRET
 };

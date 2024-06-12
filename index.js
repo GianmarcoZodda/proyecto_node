@@ -7,6 +7,7 @@ import connectionDb from "./connection/connectionDb.js"
 import {errorNotFound} from "./middlewares/errorNotFound.js";
 import rolSeed from "./seed/rolSeed.js";
 import {PORT} from "./config/config.js";
+import cookieParser from "cookie-parser";
 
 
 
@@ -16,6 +17,7 @@ const app=express();
 //para acceder a los params del body
 app.use(express.urlencoded({extended:true}))
 app.use(express.json());
+app.use(cookieParser())
 
 
 //filemname y dirname ruta del archivo y directorio (carpeta) actual

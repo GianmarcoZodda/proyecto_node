@@ -1,7 +1,8 @@
 import  user from "../models/user.js"; 
 import rol from "../models/rol.js"
 //import bcrypt from 'bcrypt';
-
+import { generateToken } from "../utils/token.js";
+import { verifyToken } from "../utils/token.js";
 
 class userController{
 
@@ -154,7 +155,27 @@ class userController{
             if (!validatePassword) {
               throw new Error("La contraseña es incorrecta");
             }
+const payload = {
+  id:data.id,
+  name: data.name,
+}
+const token = generateToken(payload)
+res.cookie("token",token)
+console.log(token)
+
             res.status(200).send({ success: true, message: data });
+          
+          } catch (error) {
+            res.status(400).send({ success: false, message: error.message });
+          }
+        }
+
+        me = async (req,res)=>{
+          console.log(req.cookies.token)
+          try {
+           const{user} = req;
+
+            res.status(200).send({ success: true, message: user });
           
           } catch (error) {
             res.status(400).send({ success: false, message: error.message });
