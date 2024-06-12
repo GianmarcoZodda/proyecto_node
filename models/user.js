@@ -5,7 +5,12 @@ import bcrypt from 'bcrypt';
 
 
 //aca definimos los modelos como en pnt1, y le agregamos validaciones para los atributos/propiedades
-class user extends Model {}
+class user extends Model {
+  validatePassword = async(password)=>{
+    const validate = bcrypt.compare(password,this.password);
+    return validate
+  };
+}
 
 user.init(
   {

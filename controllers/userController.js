@@ -142,6 +142,25 @@ class userController{
             }
 
         }
+
+        login = async (req, res) => {
+          try {
+            const { name, password } = req.body;
+            const data = await user.findOne({ where: { name } });
+            if (!data) {
+              throw new Error("El usuario no existe");
+            }
+            const validatePassword = await data.validatePassword(password);
+            if (!validatePassword) {
+              throw new Error("La contraseña es incorrecta");
+            }
+            res.status(200).send({ success: true, message: data });
+          
+          } catch (error) {
+            res.status(400).send({ success: false, message: error.message });
+          }
+        }
+
 }
 
 export default userController;
