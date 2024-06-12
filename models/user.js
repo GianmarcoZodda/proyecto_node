@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import validationMessages from "../helpers/errors.js"
 import connectionDb from "../connection/connectionDb.js";
+import bcrypt from 'bcrypt';
 
 
 //aca definimos los modelos como en pnt1, y le agregamos validaciones para los atributos/propiedades
@@ -66,5 +67,17 @@ user.init(
     modelName: "user",
   }
 );
+
+//Hasheo de password previo a la creación del user
+user.beforeCreate(async (user, options) => {
+  const salt = await bcrypt.genSalt(10)
+  console.log(salt)
+  const hashedPassword = await await bcrypt.hash(user.password, salt);
+  console.log(hashedPassword)
+  user.password = hashedPassword;
+});
+
+
+
 
 export default user;

@@ -2,8 +2,11 @@ import express from "express"
 //import url from "url"
 //import path from "path"
 import routes from "./routes/routes.js"
-import morgan from "morgan"
+//import morgan from "morgan"
 import connectionDb from "./connection/connectionDb.js"
+import {errorNotFound} from "./middlewares/errorNotFound.js";
+import rolSeed from "./seed/rolSeed.js";
+import {PORT} from "./config/config.js";
 
 
 
@@ -13,6 +16,7 @@ const app=express();
 //para acceder a los params del body
 app.use(express.urlencoded({extended:true}))
 app.use(express.json());
+
 
 //filemname y dirname ruta del archivo y directorio (carpeta) actual
 //const __filename = url.fileURLToPath(import.meta.url);
@@ -24,7 +28,7 @@ app.use(express.json());
 
 
 //static files
-app.use(express.static("public"))
+//app.use(express.static("public"))
 
 //rutas del proyecto
 app.use("/app", routes)
@@ -40,14 +44,6 @@ await connectionDb.sync({ force: true });
 //creeamos los roles al iniciar la app
 await rolSeed()
 
-/* app.get("/", (peticion, res)=>{
-    res.send("get ok")
-})
-
-app.post("/", (req, res)=>{
-    res.send("post ok")
-})
- */
 
 //puerto de escucha
 app.listen(PORT, ()=>{
