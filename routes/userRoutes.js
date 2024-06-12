@@ -1,35 +1,20 @@
 import {Router} from "express"
-import connectionDb from "../connection/connectionDb.js";
-import UserController from "../Controllers/UserController.js";
-
-const userController = new UserController();
+import userController from "../controllers/userController.js";
 
 
-const userRoutes =  Router()
+const userRoutes =  Router();
 
-//aca va el abm de user - get create delete edit details
 
-//ejemplo
+//instanciamos el controller del user
+const UserController = new userController();
 
-//ruteo
-/* userRoutes.get("/", async (req,res)=>{
-    try {
-        const query = "SELECT id, username FROM usuario";
-        const[data] = await connectionDb.query(query)
-        console.log(data)
-          res.status(200).send({sucess: true, message: data});
-    } catch (error) {
-        res.status(400).send({sucess: false, message: error});
-    }
-  
-}); */
+//aca va el abm de user (sin implementar, la logica en el controller)
+//despues de /users (definido en el archivo routes), agrego lo que va en la url
 
-userRoutes.post("/",userController.createUser)
-userRoutes.post("/login",userController.login)
-userRoutes.get("/",userController.leerUsuarios)
-userRoutes.get("/:id", userController.leerUsuario)
-userRoutes.put("/:id")
-userRoutes.delete("/:id", userController.eliminarUsuario)
-
+userRoutes.post("/", UserController.createUser);
+userRoutes.get("/", UserController.indexUser);
+userRoutes.get("/:id", UserController.detailsUser);
+userRoutes.delete("/:id", UserController.deleteUser);
+userRoutes.put("/:id", UserController.editUser);
 
 export default userRoutes
