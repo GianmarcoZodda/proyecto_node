@@ -3,7 +3,7 @@ import url from "url"
 import path from "path"
 import routes from "./routes/routes.js"
 import morgan from "morgan"
-import User from "./models/User.js"
+import User from "./models/user.js"
 import connectionDb from "./connection/connectionDb.js"
 
 

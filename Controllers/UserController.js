@@ -1,4 +1,4 @@
-import User from "../models/User.js"
+import User from "../models/user.js"
 
 class UserController {
 
@@ -50,6 +50,23 @@ eliminarUsuario = async (req, res) => {
     } catch (error) {
         res.status(500).send({ success: false, message: error.message });
     }}
+
+
+    login = async (req,res) => {
+        try {
+            const {username, password} = req.body
+            const data = await User.findOne({where:{username}});
+            res.status(200).send({
+                success: true,
+                message: data
+            });
+        } catch (error) {
+            res.status(400).send({
+                success: false,
+                message: error.message
+            });
+        }
+    }
 
 
 

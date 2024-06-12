@@ -1,6 +1,7 @@
 
 import { DataTypes, Model } from "sequelize";
 import connectionDb from "../connection/connectionDb.js";
+import bcrypt from "bcrypt"
 
 class User extends Model {}
 
@@ -20,5 +21,16 @@ password:{
     tableName: "User",
 }
 );
+
+// Method 3 via the direct method
+User.beforeCreate(async (user, options) => {
+  /*   const hashedPassword = await hashPassword(user.password);
+    user.password = hashedPassword; */
+    const salt = await bcrypt.genSalt(10)
+    console.log(salt)
+    const hashedPassword = await await bcrypt.hash(user.password, salt);
+    console.log(hashedPassword)
+    user.password = hashedPassword;
+  });
 
 export default User;
