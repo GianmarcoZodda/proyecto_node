@@ -1,7 +1,6 @@
 import  user from "../models/user.js"; 
 import rol from "../models/rol.js"
-//import bcrypt from 'bcrypt';
-
+import { generateToken } from "../utils/token.js";
 
 class userController{
 
@@ -130,7 +129,10 @@ class userController{
                 });
                 console.log("erl nombre del user a destruir: "+userToDestroy.name)
                 if(userToDestroy){
+                    //elimino usuario
                     await user.destroy({where: {id}});
+                    //elimino la cookie
+                    res.clearCookie('token');
                     res.status(204).json({ success: true, message:  `El usuario ya no existe`});
                     console.log("usuario destruido")
                 }else{
@@ -142,6 +144,59 @@ class userController{
             }
 
         }
+
+        login = async (req, res) => {
+          try {
+            const { email, password } = req.body;
+
+            console.log(req.body)
+                // Ensure email and password are provided
+          if (!email || !password) {
+            return res.status(400).send({ success: false, message: "Email and password are required" });
+          }
+
+            const data = await user.findOne({ where: { email } });
+            if (!data) {
+              throw new Error("El usuario no existe");
+            }
+            const validatePassword = await data.validatePassword(password);
+            if (!validatePassword) {
+              throw new Error("La contraseña es incorrecta");
+            }
+const payload = {
+  id:data.id,
+  email: data.email,
+}
+const token = generateToken(payload)
+res.cookie("token",token)
+console.log(token)
+
+            res.status(200).send({ success: true, message: data });
+          
+          } catch (error) {
+            res.status(400).send({ success: false, message: error.message });
+          }
+        }
+
+
+        logout = (req, res) => {
+          // metodo para eliminar la cookie
+          res.clearCookie('token');
+          res.status(200).send({ success: true, message: "Logout exitoso" });
+        };
+
+        me = async (req,res)=>{
+          console.log(req.cookies.token)
+          try {
+           const{user} = req;
+
+            res.status(200).send({ success: true, message: user });
+          
+          } catch (error) {
+            res.status(400).send({ success: false, message: error.message });
+          }
+        }
+
 }
 
 export default userController;
