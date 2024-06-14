@@ -1,6 +1,8 @@
 import  user from "../models/user.js"; 
 import rol from "../models/rol.js"
 import { generateToken } from "../utils/token.js";
+import libroController from "../Controllers/libroController.js";
+import prestamoController from "../Controllers/prestamoController.js";
 
 class userController{
 
@@ -26,6 +28,36 @@ class userController{
           }
     }
 
+
+    reservarLibro = async (req, res) => {
+      try {
+        const { title } = req.body;
+        const foundLibro = await libroController.buscarLibroPorTitulos(title);
+        console.log(foundLibro)
+        if (!foundLibro) {
+          throw new Error("Este título no se encuentra.");
+        }
+    
+        const { userId } = req.body; // Hay que modificar esta manera de obtener el id
+        const borrowDate = new Date(); // Fecha del préstamo
+        const returnDate = null; // La devolución debe ser null para actualizarse luego
+        
+        // Debemos crear el préstamo con estas credenciales
+        console.log(foundLibro.dataValues.id)
+        console.log(userId)
+        console.log(borrowDate)
+      
+        const result = await prestamoController.createPrestamo(userId, foundLibro.dataValues.id, borrowDate);
+    
+        if (result.success) {
+          res.status(201).json({ success: true, message: `Se ha reservado el libro: "${title}"` });
+        } else {
+          res.status(500).json({ success: false, message: "Error al reservar el libro" });
+        }
+      } catch (error) {
+        res.status(404).json({ success: false, message: error.message });
+      }
+    };
 
     createUser = async (req, res) => {
         try {
@@ -152,7 +184,7 @@ class userController{
             console.log(req.body)
                 // Ensure email and password are provided
           if (!email || !password) {
-            return res.status(400).send({ success: false, message: "Email and password are required" });
+            return res.status(400).send({ success: false, message: "Email y password necesarios" });
           }
 
             const data = await user.findOne({ where: { email } });
@@ -197,6 +229,6 @@ console.log(token)
           }
         }
 
-}
 
+      }
 export default userController;
