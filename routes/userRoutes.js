@@ -1,6 +1,7 @@
 import {Router} from "express"
-import userController from "../controllers/userController.js";
+import userController from "../Controllers/userController.js";
 import { validateLogin } from "../middlewares/validateLogin.js";
+
 
 const userRoutes =  Router();
 
@@ -14,6 +15,7 @@ const UserController = new userController();
 userRoutes.post("/", UserController.createUser);
 userRoutes.post("/login", UserController.login);
 userRoutes.use(validateLogin)
+userRoutes.post("/reservarLibro", UserController.reservarLibro);
 userRoutes.post("/logout", UserController.logout);
 userRoutes.get("/", UserController.indexUser);
 userRoutes.get("/me", UserController.me);
