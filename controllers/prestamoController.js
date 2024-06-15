@@ -34,6 +34,7 @@ class prestamoController {
         const prestamos = await prestamo.findAll({
           attributes: ["userId", "libroId", "borrowDate", "returnDate"]
         });
+        
         res.status(201).send({
           success: true,
           message: prestamos,
@@ -42,6 +43,26 @@ class prestamoController {
         console.log("fallo algo")
         res.status(400).send({ succces: false, message: error.message });
       }
+}
+
+buscarPrestamoADevolver = async(userId, libroId)=> {
+  try {
+    const prestamo1 = await prestamo.findOne({ 
+      where: { 
+        userId,
+        libroId,
+        returnDate: null // Si no es null, significa qu ya fue devuelto
+      } 
+    });
+    
+    if (prestamo1) {
+      return prestamo1;
+    } else {
+      throw new Error("No hay ningún préstamo activo para este usuario y libro.");
+    }
+  } catch (error) {
+    throw new Error("Error al buscar el préstamo activo.");
+  }
 }
 
 

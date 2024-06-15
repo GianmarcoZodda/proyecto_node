@@ -15,6 +15,7 @@ const UserController = new userController();
 userRoutes.post("/", UserController.createUser);
 userRoutes.post("/login", UserController.login);
 userRoutes.use(validateLogin)
+userRoutes.put("/devolverLibro", UserController.devolverLibro);
 userRoutes.post("/reservarLibro", UserController.reservarLibro);
 userRoutes.post("/logout", UserController.logout);
 userRoutes.get("/", UserController.indexUser);

@@ -38,16 +38,18 @@ class userController{
           throw new Error("Este título no se encuentra.");
         }
     
-        const { userId } = req.body; // Hay que modificar esta manera de obtener el id
+      //const { userId } = req.body; // Hay que modificar esta manera de obtener el id
+        const userId1 = req.user.id
+
         const borrowDate = new Date(); // Fecha del préstamo
         const returnDate = null; // La devolución debe ser null para actualizarse luego
         
         // Debemos crear el préstamo con estas credenciales
         console.log(foundLibro.dataValues.id)
-        console.log(userId)
+        console.log(userId1)
         console.log(borrowDate)
       
-        const result = await prestamoController.createPrestamo(userId, foundLibro.dataValues.id, borrowDate);
+        const result = await prestamoController.createPrestamo(userId1, foundLibro.dataValues.id, borrowDate);
     
         if (result.success) {
           res.status(201).json({ success: true, message: `Se ha reservado el libro: "${title}"` });
@@ -58,6 +60,50 @@ class userController{
         res.status(404).json({ success: false, message: error.message });
       }
     };
+
+    devolverLibro = async (req, res) => {
+      console.log('0');
+      try {
+        console.log('1');
+        const { title } = req.body;
+        console.log("Título del libro:", title);
+        console.log('2');
+        const foundLibro = await libroController.buscarLibroPorTitulos(title);
+        console.log("Libro encontrado:", foundLibro);
+    
+        if (!foundLibro) {
+          throw new Error("Este título no se encuentra.");
+        }
+        console.log('3');
+        const userId = req.user.id; // ID user
+        console.log("ID de usuario:", userId);
+        console.log('4');
+        // Buscar si hay un prestamo activo para ese libro y ese cliente
+        const prestamoActivo = await prestamoController.buscarPrestamoADevolver(userId, foundLibro.dataValues.id);
+        console.log("Prestamo encontrado:", prestamoActivo);
+        console.log('5');
+        if (!prestamoActivo) {
+          throw new Error("No hay ningún préstamo activo para este libro y usuario.");
+        }
+        console.log('6');
+      //Actualizar el prestamo
+        const returnDate = new Date();
+        prestamo.returnDate = returnDate;
+        console.log('7');
+      //Guardar el prestamo
+        await prestamo.save();
+        console.log('8');
+        res.status(200).json({ success: true, message: `Se ha devuelto el libro: "${title}"` });
+    
+      } catch (error) {
+        console.log('9');
+        res.status(404).json({ success: false, message: error.message });
+      }
+    };
+    
+    
+    
+
 
     createUser = async (req, res) => {
         try {
@@ -91,7 +137,7 @@ class userController{
       }
 
       
-      detailsUser = async (req, res) => {
+    /*   detailsUser = async (req, res) => {
         try {
             //igual que arriba, desestructuro params y agarro lo que necesito
             const { id } = req.params;
@@ -111,15 +157,47 @@ class userController{
                 message: `Usuario ${selectedUser.name} obtenido con exito`,
               });
             } else {
-              res.status(404).json({ succces: false, error: error.message });
+              res.status(404).json({ success: false, error: error.message });
               console.log("no existe con ese id")
             }
-
           } catch (error) {
-            res.status(500).json({ succces: false, error: error.message });
-            console.log("error del server")
+            console.error("Error en detailsUser:", error); // Log de error completo
+            console.log("Mensaje de error:", error.message); // Log del mensaje de error
+          
+            res.status(500).json({ success: false, error: error.message });
           }
-        }
+        } */
+
+        detailsUser = async (req, res) => {
+          try {
+            //igual que arriba, desestructuro params y agarro lo que necesito
+            const { id } = req.params;
+         //findByPk(id) busca por pk, el findOne() que usa el profe nos sirve para pasarle un obj y buscar por cualquier cosa
+            const selectedUser = await user.findByPk(id, {
+              attributes: ["name", "surname", "email", "password", "rolId"],
+              include: {
+                model: rol,
+                attributes: ["name"],
+              },
+            });
+
+
+        
+            if (selectedUser) {
+              res.status(200).json({
+                success: true,
+                message: `Usuario ${selectedUser.name} obtenido con éxito`,
+                user: selectedUser,
+              });
+            } else {
+              res.status(404).json({ success: false, message: `Usuario con id ${id} no encontrado` });
+            }
+        
+          } catch (error) {
+            console.error("Error en detailsUser:", error);
+            res.status(500).json({ success: false, message: error.message });
+          }
+        };
         
         
         editUser = async (req, res) => {

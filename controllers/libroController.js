@@ -69,6 +69,7 @@ class libroController{
 
           } catch (error) {
             res.status(500).json({ succces: false, error: error.message });
+            console.log("2")
             console.log("error del server")
           }
         }
