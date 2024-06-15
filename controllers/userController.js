@@ -88,10 +88,10 @@ class userController{
         console.log('6');
       //Actualizar el prestamo
         const returnDate = new Date();
-        prestamo.returnDate = returnDate;
+        prestamoActivo.returnDate = returnDate;
         console.log('7');
       //Guardar el prestamo
-        await prestamo.save();
+        await prestamoActivo.save();
         console.log('8');
         res.status(200).json({ success: true, message: `Se ha devuelto el libro: "${title}"` });
     
