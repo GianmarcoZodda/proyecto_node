@@ -5,7 +5,6 @@ export const validateLogin = async (req,res,next) => {
         const {token} = req.cookies
     if (!token) throw new Error ('Debe loguearse')
       const {payload} = verifyToken(token)
-
     req.user = payload
     next()
 

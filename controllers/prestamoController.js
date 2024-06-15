@@ -49,4 +49,4 @@ class prestamoController {
 };
 
 
-export default new prestamoController;
+export default prestamoController;

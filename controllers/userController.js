@@ -197,7 +197,6 @@ class userController {
       const { email, password } = req.body;
 
       console.log(req.body);
-      // Ensure email and password are provided
       if (!email || !password) {
         return res
           .status(400)
@@ -215,6 +214,7 @@ class userController {
       const payload = {
         id: data.id,
         email: data.email,
+        rol: data.rol
       };
       const token = generateToken(payload);
       res.cookie("token", token);

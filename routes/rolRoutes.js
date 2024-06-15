@@ -5,8 +5,7 @@ import rol from "../models/rol.js"
 const rolRoutes =  Router();
 
 
-//se debe instanciar el controller
-
+//se debe instanciar el controller de ser necesario
 //aca va el abm (sin implementar, la logica en el controller)
 
 
