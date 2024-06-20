@@ -8,18 +8,18 @@ import { validateLogin } from "../middlewares/validateLogin.js";
 const libroRoutes =  Router();
 
 //se debe instanciar el controller
-const LibroController = new libroController()
+//const LibroController = new libroController()
 
 
 //aca va el abm (sin implementar, la logica en el controller)
-libroRoutes.get("/", LibroController.indexLibro);
-libroRoutes.get("/:id", LibroController.detailsLibro);
+libroRoutes.get("/", libroController.indexLibro);
+libroRoutes.get("/:id", libroController.detailsLibro);
 
 libroRoutes.use(validateLogin);
 libroRoutes.use(esEmpleado);
-libroRoutes.post("/", LibroController.createLibro);
-libroRoutes.delete("/:id", LibroController.deleteLibro);
-libroRoutes.put("/:id", LibroController.editLibro);
+libroRoutes.post("/", libroController.createLibro);
+libroRoutes.delete("/:id", libroController.deleteLibro);
+libroRoutes.put("/:id", libroController.editLibro);
 
 
 
