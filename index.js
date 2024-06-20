@@ -6,6 +6,7 @@ import routes from "./routes/routes.js"
 import connectionDb from "./connection/connectionDb.js"
 import {errorNotFound} from "./middlewares/errorNotFound.js";
 import rolSeed from "./seed/rolSeed.js";
+import empleadoSeed from "./seed/empleadoSeed.js";
 import {PORT} from "./config/config.js";
 import cookieParser from "cookie-parser";
 
@@ -41,10 +42,11 @@ app.use(errorNotFound);
 
 //conexion a la bd
 //el force:true hace que se dropee la bd cada vez q hago un cambio, y la vuelve a generar
-await connectionDb.sync({ force: true });
+await connectionDb.sync({ force: false });
 
-//creeamos los roles al iniciar la app
-await rolSeed()
+//creeamos los roles al iniciar la app y agregamos el empleado
+await rolSeed();
+await empleadoSeed();
 
 
 //puerto de escucha

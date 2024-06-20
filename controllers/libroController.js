@@ -31,7 +31,6 @@ class libroController{
             publishedYear,
           });
           //201, creado correctamentee
-        
           res.status(201).send({
             success: true,
             message: `Libro ${newLibro.title} creado con exito`,
@@ -42,25 +41,53 @@ class libroController{
         }
       }
 
+
+      editLibro = async (req, res) => {
+        try {
+          const { id } = req.params;
+          const { title, author, publishedYear } = req.body;
+          const originalLibro = await libro.findByPk(id);
+    
+          if (originalLibro) {
+            const updatedLibro = await originalLibro.update({
+              title,
+              author,
+              publishedYear,
+            });
+            res
+              .status(200)
+              .send({
+                succes: true,
+                message: `El titulo del libro ahora es: ${updatedLibro.titlee}`,
+              });
+          } else {
+            res
+              .status(404)
+              .json({
+                succes: false,
+                message: "no se encuentra el libro con id: " + id,
+              });
+          }
+        } catch (error) {
+          res.status(400).json({ succes: false, error: error.message });
+        }
+      };
+
       
-      detailsUser = async (req, res) => {
+      detailsLibro = async (req, res) => {
         try {
             //igual que arriba, desestructuro params y agarro lo que necesito
             const { id } = req.params;
 
             //findByPk(id) busca por pk, el findOne() que usa el profe nos sirve para pasarle un obj y buscar por cualquier cosa
-            const selectedUser = await user.findByPk(id, {
-              attributes: ["name", "surname", "email", "password", "rolId"],
-              include: {
-                model: rol,
-                attributes: ["name"],
-              },
+            const selectedLibro = await libro.findByPk(id, {
+              attributes: ["title", "author", "publishedYear"]
             });
 
-            if (selectedUser) {
+            if (selectedLibro) {
               res.status(200).send({
                 success: true,
-                message: `Usuario ${selectedUser.name} obtenido con exito`,
+                message: `Libro ${selectedLibro.title} obtenido con exito`,
               });
             } else {
               res.status(404).json({ succces: false, error: error.message });
@@ -100,7 +127,7 @@ class libroController{
                 const libroToDestroy = await user.findByPk(id, {
                   attributes: ["title", "author", "publishedYear"]
                 });
-                console.log("erl nombre del user a destruir: "+userToDestroy.name)
+                console.log("el nombre del libro a destruir: "+libroToDestroy.title)
                 if(libroToDestroy){
                     //elimino Libro
                     await libro.destroy({where: {id}});

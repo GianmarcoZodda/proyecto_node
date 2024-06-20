@@ -70,4 +70,4 @@ buscarPrestamoADevolver = async(userId, libroId)=> {
 };
 
 
-export default new prestamoController;
+export default new prestamoController();
