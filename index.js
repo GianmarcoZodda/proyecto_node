@@ -42,7 +42,7 @@ app.use(errorNotFound);
 
 //conexion a la bd
 //el force:true hace que se dropee la bd cada vez q hago un cambio, y la vuelve a generar
-await connectionDb.sync({ force: false });
+await connectionDb.sync({ force: true });
 
 //creeamos los roles al iniciar la app y agregamos el empleado
 await rolSeed();

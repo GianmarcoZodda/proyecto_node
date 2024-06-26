@@ -1,5 +1,5 @@
 import {Router} from "express"
-import libroController from "../Controllers/libroController.js";
+import libroController from "../controllers/libroController.js";
 import esEmpleado from "../middlewares/esEmpleado.js";
 import { validateLogin } from "../middlewares/validateLogin.js";
 

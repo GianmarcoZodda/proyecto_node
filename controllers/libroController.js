@@ -58,7 +58,7 @@ class libroController{
               .status(200)
               .send({
                 succes: true,
-                message: `El titulo del libro ahora es: ${updatedLibro.titlee}`,
+                message: `El titulo del libro ahora es: ${updatedLibro.title}`,
               });
           } else {
             res
@@ -124,14 +124,14 @@ class libroController{
             try {
                 const { id } = req.params;
                 console.log("el id es: "+id);
-                const libroToDestroy = await user.findByPk(id, {
+                const libroToDestroy = await libro.findByPk(id, {
                   attributes: ["title", "author", "publishedYear"]
                 });
                 console.log("el nombre del libro a destruir: "+libroToDestroy.title)
                 if(libroToDestroy){
                     //elimino Libro
                     await libro.destroy({where: {id}});
-                    res.status(204).json({ success: true, message:  `El libro ya no existe`});
+                    res.status(204).send({ success: true, message:  `El libro ya no existe`});
                     console.log("Libro destruido")
                 }else{
                     res.status(404).json({ success: false, message: `El libro no se encuentra`});

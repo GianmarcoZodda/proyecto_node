@@ -1,7 +1,7 @@
 import user from "../models/user.js";
 import rol from "../models/rol.js";
 import { generateToken } from "../utils/token.js";
-import libroController from "../Controllers/libroController.js";
+import libroController from "../controllers/libroController.js";
 import prestamoController from "../Controllers/prestamoController.js";
 
 class userController {
@@ -58,9 +58,10 @@ class userController {
     };
 
     devolverLibro = async (req, res) => {
-      console.log('0');
       try {
         console.log('1');
+        console.log("debajo esta el requ")
+        console.log(req);
         const { title } = req.body;
         console.log("Título del libro:", title);
         console.log('2');
